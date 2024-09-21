@@ -1,27 +1,64 @@
-name: GitHub Classroom Workflow
-
-on: [push]
-
-jobs:
-  build:
-    name: Autograding
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install black micropico paramiko
-
-      - name: Run checks
-        run: |
-          python check_submission.py
-        continue-on-error: true
-
-      - uses: education/autograding@v1
+{
+  "tests": [
+    {
+      "name": "Check Python version",
+      "setup": "",
+      "run": "python -c \"import sys; assert sys.version_info >= (3, 7), 'Python version should be 3.7+'\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Check required packages",
+      "setup": "",
+      "run": "python -c \"import black, micropico, paramiko\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 20
+    },
+    {
+      "name": "Check file existence",
+      "setup": "",
+      "run": "test -f student_project.py && test -f README.md && test -f .gitignore",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 20
+    },
+    {
+      "name": "Check docstrings",
+      "setup": "",
+      "run": "grep -q '\"\"\"' student_project.py",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 20
+    },
+    {
+      "name": "Check Git history",
+      "setup": "",
+      "run": "git log --oneline | wc -l | grep -q '[1-9]'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Check required functions",
+      "setup": "",
+      "run": "grep -q 'def format_code' student_project.py && grep -q 'def analyze_code' student_project.py && grep -q 'def connect_ssh' student_project.py && grep -q 'def micropico_operation' student_project.py",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 20
+    }
+  ]
+}
